@@ -30,7 +30,7 @@ def scrap_provincia(prov_id: int):
         if num_rows < 5: 
             errores_seguidos += 1
         else:
-            prov_results = pd.concat(prov_results, mun_results)
+            prov_results = pd.append(mun_results)
 
         mun_id += 1
 
