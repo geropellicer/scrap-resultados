@@ -38,7 +38,7 @@ def scrap_provincia(
         )
         num_rows = mun_results.shape[0]
 
-        if num_rows < 5:
+        if not num_rows or num_rows < 5:
             errores_seguidos += 1
         else:
             errores_seguidos = 0
@@ -129,9 +129,10 @@ def scrap_municipio(
 
         mesa_actual += 1
 
-    results.to_csv(
-        "./resultados/resultados_{}_{}.csv".format(prov_id, mun_id), index=False
-    )
+    if ultima_mesa_valida: # si tiene algun resultado guardamos un backup
+        results.to_csv(
+            "./resultados/resultados_{}_{}.csv".format(prov_id, mun_id), index=False
+        )
     return results, ultima_mesa_valida
 
 
