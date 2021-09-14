@@ -17,21 +17,27 @@ logging.root.setLevel(logging.INFO)
 logger = logging.getLogger("app")
 
 
-def scrap_provincia(prov_id: int):
+def scrap_provincia(prov_id: int, mun_inicial:int= None, mesa_inicial:int = None):
     errores_seguidos = 0
 
-    mun_id = 1
+    mun_id = mun_inicial or 1
+    mesa_inicial = mesa_inicial or 1
     prov_results = DataFrame(columns=RESULTS_COLUMNS)
+    
     while errores_seguidos < ERRORES_SEGUIDOS_PERMITIDOS:
-        mun_results = scrap_municipio(prov_id, mun_id)
+        mun_results, ultima_mesa_anterior = scrap_municipio(prov_id, mun_id, mesa_inicial=mesa_inicial)
         num_rows = mun_results.shape[0]
-        errores_seguidos += 1
+        errores_seguidos = 0
 
         if num_rows < 5: 
             errores_seguidos += 1
         else:
-            prov_results = pd.append(mun_results)
+            prov_results = prov_results.append(mun_results)
 
+        if prov_id != 2:
+            mesa_inicial = ultima_mesa_anterior + 1
+        else:
+            mesa_inicial = 0
         mun_id += 1
 
     prov_results.to_csv("./resultados/resultados_{}.csv".format(prov_id), index=False)
@@ -108,4 +114,4 @@ def scrap_municipio(
         mesa_actual += 1
     
     results.to_csv("./resultados/resultados_{}_{}.csv".format(mun_id, prov_id), index=False)
-    return results
+    return results, mesa_actual
