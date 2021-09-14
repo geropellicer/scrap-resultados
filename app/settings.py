@@ -1,7 +1,8 @@
 BASE_URL = "https://resultados.gob.ar/backend-difu-arg/scope/data/getScopeData"
 ERRORES_SEGUIDOS_PERMITIDOS = 5
-RESULTS_COLUMNS = ["mesa", "votos_fitu", "votos_pts", "votos_mst", "total_votos", "total_votos_afirmativos", "total_votos_validos"]
-
+RESULTS_COLUMNS = ["provincia", "municipio", "circuito", "escuela", "mesa", "codigo_lista", "votos"]
+RESULTS_COLUMNS_FITU = ["mesa", "votos_fitu", "votos_pts", "votos_mst", "total_votos", "total_votos_afirmativos", "total_votos_validos"]
+DATOS_INTERESANTES = ["electores", "sobres", "nulos", "recurridos", "blancos", "impugnados", "totalVotos", "afirmativos", "abstencion", "valid"]
 
 codigos_fitu_partido = {
     1: "13",
