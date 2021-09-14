@@ -118,7 +118,7 @@ def scrap_municipio(
 
             logger.info(codigo_mesa_actual)
             errores_seguidos = 0
-            ultima_meda_valida = mesa_actual
+            ultima_mesa_valida = mesa_actual
 
         except Exception as e:
             logger.error(
