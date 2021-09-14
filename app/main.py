@@ -63,7 +63,7 @@ def scrap_municipio(
     mesa_actual = mesa_inicial
     results = pd.DataFrame(columns=RESULTS_COLUMNS)
     errores_seguidos = 0
-    pprint(results)
+    ultima_mesa_valida = None
 
     while errores_seguidos < ERRORES_SEGUIDOS_PERMITIDOS and (
         mesa_actual <= mesa_final if mesa_final else True
@@ -90,8 +90,6 @@ def scrap_municipio(
                     ]
                 )
 
-
-            pprint(rows)
 
             lista_partidos = response["partidos"]
             for partido in lista_partidos:
@@ -120,6 +118,7 @@ def scrap_municipio(
 
             logger.info(codigo_mesa_actual)
             errores_seguidos = 0
+            ultima_meda_valida = mesa_actual
 
         except Exception as e:
             logger.error(
@@ -133,7 +132,7 @@ def scrap_municipio(
     results.to_csv(
         "./resultados/resultados_{}_{}.csv".format(prov_id, mun_id), index=False
     )
-    return results, mesa_actual
+    return results, ultima_mesa_valida
 
 
 def scrap_municipio_fitu(
@@ -194,6 +193,7 @@ def scrap_municipio_fitu(
                 ]
             )
             errores_seguidos = 0
+            ultima_mesa_valida = mesa_actual
 
         except Exception as e:
             logger.error(
@@ -204,7 +204,8 @@ def scrap_municipio_fitu(
 
         mesa_actual += 1
 
-    results.to_csv(
-        "./resultados/resultados_{}_{}_fitu.csv".format(prov_id, mun_id), index=False
-    )
-    return results, mesa_actual
+    if ultima_mesa_valida: # si tiene algun resultado
+        results.to_csv(
+            "./resultados/resultados_{}_{}_fitu.csv".format(prov_id, mun_id), index=False
+        )
+    return results, ultima_mesa_valida
